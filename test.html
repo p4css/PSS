@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 2048px;
+            height: 1024px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 2048px;
+            height: 1024px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "third", "label": "third", "shape": "dot", "size": 10}, {"id": "estate", "label": "estate", "shape": "dot", "size": 10}, {"id": "constitution", "label": "constitution", "shape": "dot", "size": 10}, {"id": "adapted", "label": "adapted", "shape": "dot", "size": 10}, {"id": "political", "label": "political", "shape": "dot", "size": 10}, {"id": "corporate", "label": "corporate", "shape": "dot", "size": 10}, {"id": "guilds", "label": "guilds", "shape": "dot", "size": 10}, {"id": "eternal", "label": "eternal", "shape": "dot", "size": 10}, {"id": "truths", "label": "truths", "shape": "dot", "size": 10}, {"id": "laid", "label": "laid", "shape": "dot", "size": 10}, {"id": "bare", "label": "bare", "shape": "dot", "size": 10}, {"id": "existence", "label": "existence", "shape": "dot", "size": 10}, {"id": "distinctive", "label": "distinctive", "shape": "dot", "size": 10}, {"id": "feature", "label": "feature", "shape": "dot", "size": 10}, {"id": "torn", "label": "torn", "shape": "dot", "size": 10}, {"id": "asunder", "label": "asunder", "shape": "dot", "size": 10}, {"id": "eighteenth", "label": "eighteenth", "shape": "dot", "size": 10}, {"id": "century", "label": "century", "shape": "dot", "size": 10}, {"id": "radical", "label": "radical", "shape": "dot", "size": 10}, {"id": "rupture", "label": "rupture", "shape": "dot", "size": 10}, {"id": "immense", "label": "immense", "shape": "dot", "size": 10}, {"id": "majority", "label": "majority", "shape": "dot", "size": 10}, {"id": "buying", "label": "buying", "shape": "dot", "size": 10}, {"id": "disappears", "label": "disappears", "shape": "dot", "size": 10}, {"id": "absolute", "label": "absolute", "shape": "dot", "size": 10}, {"id": "monarchy", "label": "monarchy", "shape": "dot", "size": 10}, {"id": "upper", "label": "upper", "shape": "dot", "size": 10}, {"id": "hand", "label": "hand", "shape": "dot", "size": 10}, {"id": "one", "label": "one", "shape": "dot", "size": 10}, {"id": "commercial", "label": "commercial", "shape": "dot", "size": 10}, {"id": "crises", "label": "crises", "shape": "dot", "size": 10}, {"id": "various", "label": "various", "shape": "dot", "size": 10}, {"id": "stages", "label": "stages", "shape": "dot", "size": 10}, {"id": "earlier", "label": "earlier", "shape": "dot", "size": 10}, {"id": "epochs", "label": "epochs", "shape": "dot", "size": 10}, {"id": "raw", "label": "raw", "shape": "dot", "size": 10}, {"id": "material", "label": "material", "shape": "dot", "size": 10}, {"id": "conditions", "label": "conditions", "shape": "dot", "size": 10}, {"id": "complete", "label": "complete", "shape": "dot", "size": 10}, {"id": "systems", "label": "systems", "shape": "dot", "size": 10}, {"id": "guild", "label": "guild", "shape": "dot", "size": 10}, {"id": "masters", "label": "masters", "shape": "dot", "size": 10}, {"id": "best", "label": "best", "shape": "dot", "size": 10}, {"id": "possible", "label": "possible", "shape": "dot", "size": 10}, {"id": "let", "label": "let", "shape": "dot", "size": 10}, {"id": "us", "label": "us", "shape": "dot", "size": 10}, {"id": "reproach", "label": "reproach", "shape": "dot", "size": 10}, {"id": "productive", "label": "productive", "shape": "dot", "size": 10}, {"id": "forces", "label": "forces", "shape": "dot", "size": 10}, {"id": "even", "label": "even", "shape": "dot", "size": 10}, {"id": "pace", "label": "pace", "shape": "dot", "size": 10}, {"id": "keeps", "label": "keeps", "shape": "dot", "size": 10}, {"id": "united", "label": "united", "shape": "dot", "size": 10}, {"id": "action", "label": "action", "shape": "dot", "size": 10}, {"id": "already", "label": "already", "shape": "dot", "size": 10}, {"id": "seen", "label": "seen", "shape": "dot", "size": 10}, {"id": "introduce", "label": "introduce", "shape": "dot", "size": 10}, {"id": "community", "label": "community", "shape": "dot", "size": 10}, {"id": "industrial", "label": "industrial", "shape": "dot", "size": 10}, {"id": "armies", "label": "armies", "shape": "dot", "size": 10}, {"id": "production", "label": "production", "shape": "dot", "size": 10}, {"id": "longer", "label": "longer", "shape": "dot", "size": 10}, {"id": "sufficed", "label": "sufficed", "shape": "dot", "size": 10}, {"id": "compatible", "label": "compatible", "shape": "dot", "size": 10}, {"id": "small", "label": "small", "shape": "dot", "size": 10}, {"id": "peasant", "label": "peasant", "shape": "dot", "size": 10}, {"id": "communist", "label": "communist", "shape": "dot", "size": 10}, {"id": "publications", "label": "publications", "shape": "dot", "size": 10}, {"id": "literature", "label": "literature", "shape": "dot", "size": 10}, {"id": "society", "label": "society", "shape": "dot", "size": 10}, {"id": "middle", "label": "middle", "shape": "dot", "size": 10}, {"id": "ages", "label": "ages", "shape": "dot", "size": 10}, {"id": "class", "label": "class", "shape": "dot", "size": 10}, {"id": "past", "label": "past", "shape": "dot", "size": 10}, {"id": "world", "label": "world", "shape": "dot", "size": 10}, {"id": "market", "label": "market", "shape": "dot", "size": 10}, {"id": "done", "label": "done", "shape": "dot", "size": 10}, {"id": "away", "label": "away", "shape": "dot", "size": 10}, {"id": "swept", "label": "swept", "shape": "dot", "size": 10}, {"id": "previous", "label": "previous", "shape": "dot", "size": 10}, {"id": "mode", "label": "mode", "shape": "dot", "size": 10}, {"id": "new", "label": "new", "shape": "dot", "size": 10}, {"id": "jerusalem", "label": "jerusalem", "shape": "dot", "size": 10}, {"id": "markets", "label": "markets", "shape": "dot", "size": 10}, {"id": "social", "label": "social", "shape": "dot", "size": 10}, {"id": "free", "label": "free", "shape": "dot", "size": 10}, {"id": "trade", "label": "trade", "shape": "dot", "size": 10}, {"id": "selling", "label": "selling", "shape": "dot", "size": 10}, {"id": "competition", "label": "competition", "shape": "dot", "size": 10}, {"id": "development", "label": "development", "shape": "dot", "size": 10}, {"id": "opposition", "label": "opposition", "shape": "dot", "size": 10}, {"id": "parties", "label": "parties", "shape": "dot", "size": 10}, {"id": "feudal", "label": "feudal", "shape": "dot", "size": 10}, {"id": "lords", "label": "lords", "shape": "dot", "size": 10}, {"id": "absolutism", "label": "absolutism", "shape": "dot", "size": 10}, {"id": "aristocracy", "label": "aristocracy", "shape": "dot", "size": 10}, {"id": "socialism", "label": "socialism", "shape": "dot", "size": 10}, {"id": "property", "label": "property", "shape": "dot", "size": 10}, {"id": "supremacy", "label": "supremacy", "shape": "dot", "size": 10}, {"id": "sway", "label": "sway", "shape": "dot", "size": 10}, {"id": "power", "label": "power", "shape": "dot", "size": 10}, {"id": "movement", "label": "movement", "shape": "dot", "size": 10}, {"id": "industries", "label": "industries", "shape": "dot", "size": 10}, {"id": "whose", "label": "whose", "shape": "dot", "size": 10}, {"id": "accumulated", "label": "accumulated", "shape": "dot", "size": 10}, {"id": "labor", "label": "labor", "shape": "dot", "size": 10}, {"id": "wage", "label": "wage", "shape": "dot", "size": 10}, {"id": "german", "label": "german", "shape": "dot", "size": 10}, {"id": "philosophers", "label": "philosophers", "shape": "dot", "size": 10}, {"id": "continued", "label": "continued", "shape": "dot", "size": 10}, {"id": "undeveloped", "label": "undeveloped", "shape": "dot", "size": 10}, {"id": "state", "label": "state", "shape": "dot", "size": 10}, {"id": "existing", "label": "existing", "shape": "dot", "size": 10}, {"id": "bourgeois", "label": "bourgeois", "shape": "dot", "size": 10}, {"id": "find", "label": "find", "shape": "dot", "size": 10}, {"id": "work", "label": "work", "shape": "dot", "size": 10}, {"id": "two", "label": "two", "shape": "dot", "size": 10}, {"id": "great", "label": "great", "shape": "dot", "size": 10}, {"id": "classes", "label": "classes", "shape": "dot", "size": 10}, {"id": "french", "label": "french", "shape": "dot", "size": 10}, {"id": "criticism", "label": "criticism", "shape": "dot", "size": 10}, {"id": "revolution", "label": "revolution", "shape": "dot", "size": 10}, {"id": "ideas", "label": "ideas", "shape": "dot", "size": 10}, {"id": "proletarian", "label": "proletarian", "shape": "dot", "size": 10}, {"id": "historical", "label": "historical", "shape": "dot", "size": 10}, {"id": "revolutionary", "label": "revolutionary", "shape": "dot", "size": 10}, {"id": "true", "label": "true", "shape": "dot", "size": 10}, {"id": "word", "label": "word", "shape": "dot", "size": 10}, {"id": "nation", "label": "nation", "shape": "dot", "size": 10}, {"id": "another", "label": "another", "shape": "dot", "size": 10}, {"id": "national", "label": "national", "shape": "dot", "size": 10}, {"id": "different", "label": "different", "shape": "dot", "size": 10}, {"id": "countries", "label": "countries", "shape": "dot", "size": 10}, {"id": "ruling", "label": "ruling", "shape": "dot", "size": 10}, {"id": "old", "label": "old", "shape": "dot", "size": 10}, {"id": "ones", "label": "ones", "shape": "dot", "size": 10}, {"id": "private", "label": "private", "shape": "dot", "size": 10}, {"id": "relations", "label": "relations", "shape": "dot", "size": 10}, {"id": "individual", "label": "individual", "shape": "dot", "size": 10}, {"id": "common", "label": "common", "shape": "dot", "size": 10}, {"id": "reactionary", "label": "reactionary", "shape": "dot", "size": 10}, {"id": "character", "label": "character", "shape": "dot", "size": 10}, {"id": "science", "label": "science", "shape": "dot", "size": 10}, {"id": "economic", "label": "economic", "shape": "dot", "size": 10}, {"id": "intellectual", "label": "intellectual", "shape": "dot", "size": 10}, {"id": "suffering", "label": "suffering", "shape": "dot", "size": 10}, {"id": "working", "label": "working", "shape": "dot", "size": 10}, {"id": "antagonisms", "label": "antagonisms", "shape": "dot", "size": 10}, {"id": "struggle", "label": "struggle", "shape": "dot", "size": 10}, {"id": "every", "label": "every", "shape": "dot", "size": 10}, {"id": "modern", "label": "modern", "shape": "dot", "size": 10}, {"id": "industry", "label": "industry", "shape": "dot", "size": 10}, {"id": "bourgeoisie", "label": "bourgeoisie", "shape": "dot", "size": 10}, {"id": "present", "label": "present", "shape": "dot", "size": 10}, {"id": "form", "label": "form", "shape": "dot", "size": 10}, {"id": "hence", "label": "hence", "shape": "dot", "size": 10}, {"id": "family", "label": "family", "shape": "dot", "size": 10}, {"id": "country", "label": "country", "shape": "dot", "size": 10}, {"id": "proletariat", "label": "proletariat", "shape": "dot", "size": 10}, {"id": "petty", "label": "petty", "shape": "dot", "size": 10}, {"id": "epoch", "label": "epoch", "shape": "dot", "size": 10}, {"id": "many", "label": "many", "shape": "dot", "size": 10}, {"id": "freedom", "label": "freedom", "shape": "dot", "size": 10}, {"id": "rising", "label": "rising", "shape": "dot", "size": 10}, {"id": "whole", "label": "whole", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "third", "mi": 12.524296848057283, "to": "estate", "weight": 1}, {"from": "constitution", "mi": 12.524296848057283, "to": "adapted", "weight": 1}, {"from": "constitution", "mi": 8.666315852929712, "to": "political", "weight": 1}, {"from": "corporate", "mi": 11.939334347336127, "to": "guilds", "weight": 1}, {"from": "eternal", "mi": 11.524296848057283, "to": "truths", "weight": 1}, {"from": "laid", "mi": 11.524296848057283, "to": "bare", "weight": 1}, {"from": "bare", "mi": 7.617406252448765, "to": "existence", "weight": 1}, {"from": "distinctive", "mi": 11.35437184661497, "to": "feature", "weight": 1}, {"from": "torn", "mi": 11.35437184661497, "to": "asunder", "weight": 1}, {"from": "eighteenth", "mi": 11.202368753169921, "to": "century", "weight": 1}, {"from": "radical", "mi": 11.202368753169921, "to": "rupture", "weight": 1}, {"from": "immense", "mi": 11.109259348778439, "to": "majority", "weight": 1}, {"from": "buying", "mi": 10.939334347336127, "to": "disappears", "weight": 1}, {"from": "absolute", "mi": 10.88044065828256, "to": "monarchy", "weight": 1}, {"from": "upper", "mi": 10.524296848057283, "to": "hand", "weight": 1}, {"from": "hand", "mi": 7.10925934877844, "to": "one", "weight": 1}, {"from": "commercial", "mi": 10.524296848057283, "to": "crises", "weight": 1}, {"from": "various", "mi": 10.524296848057283, "to": "stages", "weight": 1}, {"from": "earlier", "mi": 10.35437184661497, "to": "epochs", "weight": 1}, {"from": "raw", "mi": 10.35437184661497, "to": "material", "weight": 1}, {"from": "material", "mi": 6.295478157561402, "to": "conditions", "weight": 1}, {"from": "complete", "mi": 10.35437184661497, "to": "systems", "weight": 1}, {"from": "guild", "mi": 10.202368753169921, "to": "masters", "weight": 1}, {"from": "best", "mi": 10.202368753169921, "to": "possible", "weight": 1}, {"from": "let", "mi": 10.109259348778439, "to": "us", "weight": 1}, {"from": "us", "mi": 9.939334347336127, "to": "reproach", "weight": 1}, {"from": "productive", "mi": 10.064865229419986, "to": "forces", "weight": 1}, {"from": "even", "mi": 10.064865229419986, "to": "pace", "weight": 1}, {"from": "even", "mi": 9.47990272869883, "to": "keeps", "weight": 1}, {"from": "united", "mi": 9.939334347336127, "to": "action", "weight": 1}, {"from": "already", "mi": 9.939334347336127, "to": "seen", "weight": 1}, {"from": "introduce", "mi": 9.88044065828256, "to": "community", "weight": 1}, {"from": "industrial", "mi": 9.82385712991619, "to": "armies", "weight": 1}, {"from": "industrial", "mi": 5.708379912496254, "to": "production", "weight": 1}, {"from": "longer", "mi": 9.617406252448765, "to": "sufficed", "weight": 1}, {"from": "longer", "mi": 9.617406252448765, "to": "compatible", "weight": 1}, {"from": "small", "mi": 9.617406252448765, "to": "peasant", "weight": 1}, {"from": "communist", "mi": 9.47990272869883, "to": "publications", "weight": 1}, {"from": "communist", "mi": 7.94938801200005, "to": "literature", "weight": 1}, {"from": "communist", "mi": 4.836046538924105, "to": "society", "weight": 1}, {"from": "middle", "mi": 9.461287050531482, "to": "ages", "weight": 1}, {"from": "middle", "mi": 5.708379912496254, "to": "class", "weight": 1}, {"from": "ages", "mi": 8.184446845172658, "to": "past", "weight": 1}, {"from": "world", "mi": 9.257510307362383, "to": "market", "weight": 1}, {"from": "done", "mi": 9.238894629195034, "to": "away", "weight": 1}, {"from": "away", "mi": 8.82385712991619, "to": "swept", "weight": 1}, {"from": "previous", "mi": 9.202368753169921, "to": "mode", "weight": 1}, {"from": "new", "mi": 9.202368753169921, "to": "jerusalem", "weight": 1}, {"from": "new", "mi": 8.202368753169921, "to": "markets", "weight": 1}, {"from": "new", "mi": 5.501929035028828, "to": "social", "weight": 1}, {"from": "free", "mi": 9.064865229419986, "to": "trade", "weight": 1}, {"from": "free", "mi": 8.842472808083539, "to": "selling", "weight": 1}, {"from": "free", "mi": 7.605433610782688, "to": "competition", "weight": 1}, {"from": "free", "mi": 6.257510307362382, "to": "development", "weight": 1}, {"from": "opposition", "mi": 8.939334347336127, "to": "parties", "weight": 1}, {"from": "parties", "mi": 5.823857129916191, "to": "class", "weight": 1}, {"from": "feudal", "mi": 8.939334347336127, "to": "lords", "weight": 1}, {"from": "feudal", "mi": 8.939334347336127, "to": "absolutism", "weight": 1}, {"from": "feudal", "mi": 6.9393343473361275, "to": "aristocracy", "weight": 1}, {"from": "feudal", "mi": 5.295478157561402, "to": "society", "weight": 1}, {"from": "feudal", "mi": 5.131979425278523, "to": "socialism", "weight": 1}, {"from": "feudal", "mi": 4.131979425278523, "to": "property", "weight": 1}, {"from": "political", "mi": 7.443923431593263, "to": "supremacy", "weight": 1}, {"from": "political", "mi": 7.081353352208555, "to": "sway", "weight": 1}, {"from": "political", "mi": 6.081353352208555, "to": "power", "weight": 1}, {"from": "political", "mi": 5.418388339486126, "to": "movement", "weight": 1}, {"from": "industries", "mi": 8.617406252448765, "to": "whose", "weight": 1}, {"from": "accumulated", "mi": 8.617406252448765, "to": "labor", "weight": 1}, {"from": "labor", "mi": 7.032443751727609, "to": "wage", "weight": 1}, {"from": "german", "mi": 8.617406252448765, "to": "philosophers", "weight": 1}, {"from": "german", "mi": 5.979976331833472, "to": "socialism", "weight": 1}, {"from": "continued", "mi": 8.617406252448765, "to": "existence", "weight": 1}, {"from": "undeveloped", "mi": 8.585697392721427, "to": "state", "weight": 1}, {"from": "state", "mi": 6.585697392721427, "to": "existing", "weight": 1}, {"from": "state", "mi": 3.3713782719206606, "to": "bourgeois", "weight": 1}, {"from": "find", "mi": 8.501929035028828, "to": "work", "weight": 1}, {"from": "two", "mi": 8.47990272869883, "to": "great", "weight": 1}, {"from": "two", "mi": 7.47990272869883, "to": "classes", "weight": 1}, {"from": "french", "mi": 8.131979425278523, "to": "criticism", "weight": 1}, {"from": "french", "mi": 6.716941925999679, "to": "revolution", "weight": 1}, {"from": "french", "mi": 6.431539707137431, "to": "literature", "weight": 1}, {"from": "french", "mi": 6.044516584028184, "to": "ideas", "weight": 1}, {"from": "proletarian", "mi": 7.861331835334854, "to": "movement", "weight": 1}, {"from": "proletarian", "mi": 7.524296848057284, "to": "revolution", "weight": 1}, {"from": "movement", "mi": 6.861331835334854, "to": "historical", "weight": 1}, {"from": "movement", "mi": 6.028441821170112, "to": "revolutionary", "weight": 1}, {"from": "true", "mi": 7.716941925999679, "to": "socialism", "weight": 1}, {"from": "socialism", "mi": 4.409513400807432, "to": "bourgeois", "weight": 1}, {"from": "one", "mi": 7.676299941502333, "to": "word", "weight": 1}, {"from": "one", "mi": 6.939334347336127, "to": "nation", "weight": 1}, {"from": "one", "mi": 6.716941925999679, "to": "another", "weight": 1}, {"from": "one", "mi": 5.716941925999679, "to": "national", "weight": 1}, {"from": "one", "mi": 2.823857129916191, "to": "class", "weight": 1}, {"from": "different", "mi": 7.653932128473879, "to": "countries", "weight": 1}, {"from": "revolution", "mi": 3.8949402279776737, "to": "bourgeois", "weight": 1}, {"from": "classes", "mi": 6.257510307362382, "to": "ruling", "weight": 1}, {"from": "old", "mi": 7.238894629195035, "to": "ones", "weight": 1}, {"from": "old", "mi": 5.180000940141466, "to": "society", "weight": 1}, {"from": "old", "mi": 4.180000940141467, "to": "conditions", "weight": 1}, {"from": "old", "mi": 4.016502207858587, "to": "property", "weight": 1}, {"from": "private", "mi": 7.202368753169921, "to": "property", "weight": 1}, {"from": "private", "mi": 4.5730121330903115, "to": "bourgeois", "weight": 1}, {"from": "property", "mi": 5.658048236946111, "to": "relations", "weight": 1}, {"from": "property", "mi": 5.131979425278523, "to": "individual", "weight": 1}, {"from": "property", "mi": 4.81005133039116, "to": "common", "weight": 1}, {"from": "property", "mi": 3.8949402279776733, "to": "bourgeois", "weight": 1}, {"from": "reactionary", "mi": 6.977402388169646, "to": "character", "weight": 1}, {"from": "social", "mi": 6.916966534307673, "to": "science", "weight": 1}, {"from": "social", "mi": 5.653932128473879, "to": "power", "weight": 1}, {"from": "social", "mi": 5.238894629195035, "to": "existing", "weight": 1}, {"from": "social", "mi": 5.180000940141467, "to": "conditions", "weight": 1}, {"from": "economic", "mi": 6.880440658282558, "to": "conditions", "weight": 1}, {"from": "conditions", "mi": 2.8360465389241054, "to": "bourgeois", "weight": 1}, {"from": "historical", "mi": 6.301904426720835, "to": "development", "weight": 1}, {"from": "intellectual", "mi": 6.823857129916191, "to": "production", "weight": 1}, {"from": "production", "mi": 2.194500509836581, "to": "bourgeois", "weight": 1}, {"from": "suffering", "mi": 6.823857129916191, "to": "class", "weight": 1}, {"from": "class", "mi": 6.762456585252048, "to": "working", "weight": 1}, {"from": "class", "mi": 6.582849030412396, "to": "antagonisms", "weight": 1}, {"from": "class", "mi": 6.475933826495885, "to": "ruling", "weight": 1}, {"from": "class", "mi": 5.321356789387008, "to": "struggle", "weight": 1}, {"from": "class", "mi": 3.5759296164726058, "to": "revolutionary", "weight": 1}, {"from": "class", "mi": 3.300295173859178, "to": "every", "weight": 1}, {"from": "class", "mi": 1.7794630105577374, "to": "bourgeois", "weight": 1}, {"from": "working", "mi": 4.51306959263403, "to": "modern", "weight": 1}, {"from": "modern", "mi": 6.69948271686491, "to": "industry", "weight": 1}, {"from": "modern", "mi": 4.468675473275575, "to": "bourgeois", "weight": 1}, {"from": "modern", "mi": 3.1594326380193283, "to": "bourgeoisie", "weight": 1}, {"from": "national", "mi": 6.62947908474934, "to": "struggle", "weight": 1}, {"from": "existing", "mi": 5.617406252448765, "to": "society", "weight": 1}, {"from": "present", "mi": 6.364425511278894, "to": "form", "weight": 1}, {"from": "form", "mi": 3.194500509836581, "to": "bourgeois", "weight": 1}, {"from": "society", "mi": 6.295478157561402, "to": "hence", "weight": 1}, {"from": "society", "mi": 4.5730121330903115, "to": "bourgeois", "weight": 1}, {"from": "family", "mi": 6.180000940141467, "to": "relations", "weight": 1}, {"from": "family", "mi": 4.779463010557738, "to": "bourgeois", "weight": 1}, {"from": "every", "mi": 6.093844296391752, "to": "country", "weight": 1}, {"from": "every", "mi": 5.752807378556685, "to": "revolutionary", "weight": 1}, {"from": "revolutionary", "mi": 4.2763693346136975, "to": "proletariat", "weight": 1}, {"from": "petty", "mi": 6.020471110061532, "to": "bourgeois", "weight": 1}, {"from": "petty", "mi": 4.541303273362973, "to": "bourgeoisie", "weight": 1}, {"from": "bourgeois", "mi": 5.894940227977673, "to": "epoch", "weight": 1}, {"from": "bourgeois", "mi": 4.894940227977674, "to": "individual", "weight": 1}, {"from": "bourgeois", "mi": 4.725015226535361, "to": "many", "weight": 1}, {"from": "bourgeois", "mi": 4.435508609340376, "to": "freedom", "weight": 1}, {"from": "rising", "mi": 6.0007348920002705, "to": "bourgeoisie", "weight": 1}, {"from": "bourgeoisie", "mi": 3.6084174692215103, "to": "whole", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
